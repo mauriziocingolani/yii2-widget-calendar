@@ -27,7 +27,13 @@ $calendar = $this->context;
 
     <!-- TITLE -->
     <div class="calendar-title col-sm-4 text-center">
-        <h4>{titolo...}</h4>
+        <?php
+        if ($calendar->mode == Calendar::MODE_MONTH) :
+            echo Html::tag('h4', "$calendar->monthOrWeek $calendar->year");
+        elseif ($calendar->mode == Calendar::MODE_WEEK) :
+            echo Html::tag('h4', "settimana $calendar->monthOrWeek del $calendar->year");
+        endif;
+        ?>
     </div>
 
     <!-- CONTROLS -->

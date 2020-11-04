@@ -28,15 +28,15 @@ class Calendar extends Widget {
         return $this->render('calendar');
     }
 
-    public function getTitle() {
-        return "{titolo}";
-    }
-
     private function _checkConfig() {
         if (is_null($this->mode)) :
             throw new InvalidConfigException(self::class . ': you must set the $mode attribute.');
+        elseif ($this->mode == self::MODE_DAY) :
+            throw new InvalidConfigException(self::class . ': "day" mode not supported yet.');
         elseif (!in_array($this->mode, $this->modes)) :
             throw new InvalidConfigException(self::class . ': you should add the $mode you selected (' . $this->mode . ') in the $modes attribute array.');
+        elseif (in_array($this->mode, [self::MODE_MONTH, self::MODE_WEEK]) && !($this->year && $this->monthOrWeek)) :
+            throw new InvalidConfigException(self::class . ': you must set the $year and $monthOrWeek attributes.');
         endif;
     }
 
