@@ -37,16 +37,16 @@ $calendar = $this->context;
     <div class="calendar-controls col-sm-4 text-center">
         <div class="btn-group" role="group" aria-label="...">
             <?=
-            Html::fasa('step-backward', null, ["/"], [
+            Html::fasa('step-backward', null, [$calendar->getPreviousButtonUrl()], [
                 'class' => 'btn btn-xs btn-default',
-                'title' => '...',
+                'title' => $calendar->getPreviousButtonTitle(),
             ]) .
-            Html::a('Oggi', ["/"], [
+            Html::a('Oggi', [$calendar->getTodayButtonUrl()], [
                 'class' => 'btn btn-xs btn-default',
             ]) .
-            Html::fasa('step-forward', null, ["/"], [
+            Html::fasa('step-forward', null, [$calendar->getNextButtonUrl()], [
                 'class' => 'btn btn-xs btn-default',
-                'title' => '...',
+                'title' => $calendar->getNextButtonTitle(),
             ]);
             ?>
         </div>
