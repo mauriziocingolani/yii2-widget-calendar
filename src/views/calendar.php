@@ -1,7 +1,10 @@
 <?php
 
 use mauriziocingolani\calendar\Calendar;
-use mauriziocingolani\yii2fmwkphp\Html;
+use mauriziocingolani\yii2fmwkphp\{
+    DateTime,
+    Html
+};
 
 /* @var $this \mauriziocingolani\yii2fmwkphp\View */
 /* @var $calendar Calendar */
@@ -55,7 +58,57 @@ $calendar = $this->context;
 </div>
 
 <div class="overflow-auto">
-    <table class="calendar mb-3">
+    <table class="calendar <?= $calendar->mode; ?> mb-3">
+
+        <?php $days = $calendar->getDays(); ?>
+
+        <?php if ($calendar->mode == Calendar::MODE_MONTH) : ?>
+
+            <!-- MONTH TABLE -->
+            <?php foreach ($days as $week => $wds) : $m = DateTime::GetMonthNumber($calendar->monthOrWeek); ?>
+                <tr>
+                    <td class="week" rowspan="2">w <?= $week; ?></td>
+                    <?php foreach ($wds as $day) : $inMonth = $day->format('m') == $m; ?>
+                        <td class="day <?= $inMonth ? null : 'not-in-month'; ?>">
+                            <?= $inMonth ? DateTime::GetDay($day->format('N')) . ' <strong>' . $day->format('d') . '</strong>' : $day->format('d/m/Y'); ?>
+                        </td>
+                    <?php endforeach; ?>
+                </tr>
+                <tr>
+                    <?php foreach ($wds as $day) : $inMonth = (int) $day->format('m') == (int) $m; ?>
+                        <td class="eventi <?= $inMonth ? null : 'not-in-month'; ?>" style="vertical-align: top;">
+                            <div>
+                                <!-- DATA... -->
+                            </div>
+                        </td>
+                    <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
+
+        <?php elseif ($calendar->mode == Calendar::MODE_WEEK) : ?>
+
+            <!-- WEEK TABLE -->
+            <tr>
+                <?php foreach ($days as $day) : ?>
+                    <td class="day d-table-cell d-sm-none">
+                        <?= DateTime::GetDay($day->format('N'), true) . ' <strong>' . $day->format('d') . '</strong> ' . DateTime::GetMonth($day->format('m'), true); ?>
+                    </td>
+                    <td class="day d-none d-sm-table-cell">
+                        <?= DateTime::GetDay($day->format('N')) . ' <strong>' . $day->format('d') . '</strong> ' . DateTime::GetMonth($day->format('m')); ?>
+                    </td>
+                <?php endforeach; ?>
+            </tr>
+            <tr>
+                <?php foreach ($days as $day) : ?>
+                    <td class="eventi" style="vertical-align: top;">
+                        <div>
+                            <!-- DATA... -->
+                        </div>
+                    </td>
+                <?php endforeach; ?>
+            </tr>
+
+        <?php endif; ?>
 
     </table>
 </div>

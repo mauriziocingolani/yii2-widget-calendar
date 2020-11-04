@@ -176,4 +176,39 @@ class Calendar extends Widget {
         endif;
     }
 
+    /**
+     * @return array Oggetti \DateTime che rappresentano i giorni da mostrare sul calendario.
+     */
+    public function getDays(): array {
+        if ($this->mode == self::MODE_MONTH) :
+            $days = [];
+            $m = DateTime::GetMonthNumber($this->monthOrWeek);
+            $firstday = new \DateTime("$this->year-$m-1"); # primo giorno del mese
+            $dayInWeek = (int) $firstday->format('N'); # posizione del primo giorno del mese (1 per lunedì)
+            if ($dayInWeek > 1) # se la settimana non inizia di lunedì sottraggo i giorni per arrivare al vero giorno
+                $firstday->sub(new \DateInterval("P" . ($dayInWeek - 1) . "D"));
+            $firstday = $firstday->modify("-1 days");
+            $weekIteration = 0;
+            do {
+                for ($i = 0; $i < 7; $i++) :
+                    $firstday = $firstday->modify("+1 days");
+                    # controllo per il caso in cui l'ultimo giorno del mese è anche l'ultimo della settimana
+                    if ($weekIteration > 0 && $i == 0 && $firstday->format('m') != $m)
+                        break 2;
+                    $days[$firstday->format('W')][] = clone $firstday;
+                endfor;
+                $weekIteration++;
+            } while ($firstday->format('m') == $m);
+            return $days;
+        elseif ($this->mode == self::MODE_WEEK) :
+            $first = new \DateTime("$this->year-W$this->monthOrWeek-1");
+            $days = [$first];
+            for ($i = 1; $i <= 6; $i++) :
+                $d = clone $first;
+                $days[] = $d->modify("+$i day");
+            endfor;
+            return $days;
+        endif;
+    }
+
 }
