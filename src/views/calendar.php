@@ -14,13 +14,10 @@ $calendar = $this->context;
     <div class="calendar-mode col-sm-4 text-center">
         <div class="btn-group" role="group" aria-label="...">
             <?php if (array_search(Calendar::MODE_MONTH, $calendar->modes) !== false) : ?>
-                <a href="/" class="btn btn-default btn-xs <?= $calendar->mode == Calendar::MODE_MONTH ? 'btn-primary' : null; ?>">Mese</a>
+                <a href="<?= $calendar->getMonthModeUrl(); ?>" class="btn btn-default btn-xs <?= $calendar->mode == Calendar::MODE_MONTH ? 'btn-primary disabled' : null; ?>">Mese</a>
             <?php endif; ?>
             <?php if (array_search(Calendar::MODE_WEEK, $calendar->modes) !== false) : ?>
-                <a href="/" class="btn btn-default btn-xs <?= $calendar->mode == Calendar::MODE_WEEK ? 'btn-primary' : null; ?>">Settimana</a>
-            <?php endif; ?>
-            <?php if (array_search(Calendar::MODE_DAY, $calendar->modes) !== false) : ?>
-                <a href="/" class="btn btn-default btn-xs <?= $calendar->mode == Calendar::MODE_DAY ? 'btn-primary' : null; ?>">Giorno</a>
+                <a href="<?= $calendar->getWeekModeUrl(); ?>" class="btn btn-default btn-xs <?= $calendar->mode == Calendar::MODE_WEEK ? 'btn-primary disabled' : null; ?>">Settimana</a>
             <?php endif; ?>
         </div>
     </div>
