@@ -1,0 +1,25 @@
+{
+    "name": "mauriziocingolani/yii2-widget-calendar",
+    "description": "Yii2 widget for html calendar",
+    "keywords": [
+        "yii2",
+        "widget",
+        "calendar"
+    ],
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Maurizio Cingolani",
+            "email": "mauriziocingolani74@gmail.com"
+        }
+    ],
+    "require": {
+        "mauriziocingolani/yii2-fmwk-php": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "mauriziocingolani\\calendar\\": "src"
+        }
+    }
+}
