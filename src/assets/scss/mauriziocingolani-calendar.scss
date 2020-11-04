@@ -1,0 +1,80 @@
+/*
+    Styles for mauriziocingolani\yii_widget_calendar.
+*/
+
+table.calendar {
+    width: 100%;
+    td {
+        padding: 3px;
+    }
+    &.month td {
+        border: 1px solid #bababa;
+        font-size: 10px;
+        vertical-align: top;
+        width: 100px;
+        &.week {
+            color: #bababa;
+            vertical-align: middle;
+            width: 30px;
+        }
+        &.day {
+            background: #ddd;
+        }
+        &.not-in-month {
+            background: #f4f4f4;
+            color: #bababa;
+        }
+        &.eventi div {
+            min-height: 50px;
+        }
+        @media screen and (min-width: 768px) {
+            font-size: 14px;
+        }
+    }
+    &.week td {
+        border: 1px solid #bababa;
+        font-size: 10px;
+        width: 100px;
+        &.day {
+            background: #eee;
+        }
+        &.eventi div {
+            min-height: 50px;
+        }
+        @media screen and (min-width: 768px) {
+            font-size: 14px;
+        } 
+    }
+    &.day td {
+        border: 1px solid #bababa; 
+        width: 300px;
+        &.week {
+            background: #eee;
+            color: #bababa;
+        }
+        &.eventi div {
+            min-height: 50px;
+        }
+    }
+}
+.calendar-mode {
+    @media screen and (min-width: 768px) {
+        text-align: left;
+    }
+}
+.calendar-title { 
+    margin-top: 10px;
+    h4 {
+        font-weight: 700;
+    }
+    @media screen and (min-width: 768px) {
+        margin-top: 0;
+    }
+}
+.calendar-controls {
+    margin-bottom: 10px;
+    @media screen and (min-width: 768px) {
+        margin-bottom: 0;
+        text-align: right;
+    }
+}

@@ -1,0 +1,92 @@
+/*
+    Styles for mauriziocingolani\yii_widget_calendar.
+*/
+table.calendar {
+  width: 100%;
+}
+table.calendar td {
+  padding: 3px;
+}
+table.calendar.month td {
+  border: 1px solid #bababa;
+  font-size: 10px;
+  vertical-align: top;
+  width: 100px;
+}
+table.calendar.month td.week {
+  color: #bababa;
+  vertical-align: middle;
+  width: 30px;
+}
+table.calendar.month td.day {
+  background: #ddd;
+}
+table.calendar.month td.not-in-month {
+  background: #f4f4f4;
+  color: #bababa;
+}
+table.calendar.month td.eventi div {
+  min-height: 50px;
+}
+@media screen and (min-width: 768px) {
+  table.calendar.month td {
+    font-size: 14px;
+  }
+}
+table.calendar.week td {
+  border: 1px solid #bababa;
+  font-size: 10px;
+  width: 100px;
+}
+table.calendar.week td.day {
+  background: #eee;
+}
+table.calendar.week td.eventi div {
+  min-height: 50px;
+}
+@media screen and (min-width: 768px) {
+  table.calendar.week td {
+    font-size: 14px;
+  }
+}
+table.calendar.day td {
+  border: 1px solid #bababa;
+  width: 300px;
+}
+table.calendar.day td.week {
+  background: #eee;
+  color: #bababa;
+}
+table.calendar.day td.eventi div {
+  min-height: 50px;
+}
+
+@media screen and (min-width: 768px) {
+  .calendar-mode {
+    text-align: left;
+  }
+}
+
+.calendar-title {
+  margin-top: 10px;
+}
+.calendar-title h4 {
+  font-weight: 700;
+}
+@media screen and (min-width: 768px) {
+  .calendar-title {
+    margin-top: 0;
+  }
+}
+
+.calendar-controls {
+  margin-bottom: 10px;
+}
+@media screen and (min-width: 768px) {
+  .calendar-controls {
+    margin-bottom: 0;
+    text-align: right;
+  }
+}
+
+/*# sourceMappingURL=mauriziocingolani-calendar.css.map */
