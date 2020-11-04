@@ -11,4 +11,8 @@ class Calendar extends Widget {
         parent::init();
     }
 
+    public function run(): string {
+        return $this->render('calendar');
+    }
+
 }
