@@ -18,8 +18,8 @@ class CalendarAsset extends AssetBundle {
         $this->css = ['css/mauriziocingolani-calendar.css'];
         $this->depends = [
             'yii\web\YiiAsset',
-            'app\assets\Bootstrap4',
-            'rmrevin\yii\fontawesome\AssetBundle',
+            'yii\bootstrap4\BootstrapPluginAsset',
+            '\rmrevin\yii\fontawesome\AssetBundle',
         ];
         parent::init();
     }
