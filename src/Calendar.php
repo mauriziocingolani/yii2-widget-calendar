@@ -3,7 +3,7 @@
 namespace mauriziocingolani\calendar;
 
 use yii\base\InvalidConfigException;
-use yii\bootstrap\Widget;
+use yii\bootstrap4\Widget;
 use mauriziocingolani\yii2fmwkphp\DateTime;
 
 /**
