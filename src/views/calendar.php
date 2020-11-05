@@ -78,7 +78,8 @@ $calendar = $this->context;
                     <?php foreach ($wds as $day) : $inMonth = (int) $day->format('m') == (int) $m; ?>
                         <td class="eventi <?= $inMonth ? null : 'not-in-month'; ?>" style="vertical-align: top;">
                             <div>
-                                <!-- DATA... -->
+                                <!-- DATA -->
+                                <?= $calendar->data[$day->format('Y-m-d')] ?? null; ?>
                             </div>
                         </td>
                     <?php endforeach; ?>
@@ -102,7 +103,8 @@ $calendar = $this->context;
                 <?php foreach ($days as $day) : ?>
                     <td class="eventi" style="vertical-align: top;">
                         <div>
-                            <!-- DATA... -->
+                            <!-- DATA -->
+                            <?= $calendar->data[$day->format('Y-m-d')] ?? null; ?>
                         </div>
                     </td>
                 <?php endforeach; ?>
