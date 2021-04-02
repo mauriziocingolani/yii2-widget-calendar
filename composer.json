@@ -17,7 +17,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.6.0",
-        "yiisoft/yii2": "2.0.40",
+        "yiisoft/yii2": "^2.0.35",
         "yiisoft/yii2-bootstrap4": "*",
         "mauriziocingolani/yii2-fmwk-php": "*",
         "rmrevin/yii2-fontawesome": "*"
