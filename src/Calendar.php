@@ -12,7 +12,7 @@ use mauriziocingolani\yii2fmwkphp\DateTime;
  * 
  * @author Maurizio Cingolani <mauriziocingolani74@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version 1.0
+ * @version 1.0.1
  */
 class Calendar extends Widget {
 
@@ -150,7 +150,8 @@ class Calendar extends Widget {
         if ($this->mode == self::MODE_MONTH) :
             return '/' . $this->route . date('Y') . '/' . DateTime::GetMonth((int) date('m'));
         elseif ($this->mode == self::MODE_WEEK) :
-            return '/' . $this->route . date('Y/W');
+            # Attenzione! Usare anno ISO 8601, altrimenti nell'ultima settimana dell'anno possono esserci problemi
+            return '/' . $this->route . date('o/W');
         endif;
     }
 
