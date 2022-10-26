@@ -12,13 +12,13 @@ use mauriziocingolani\yii2fmwkphp\DateTime;
  * 
  * @author Maurizio Cingolani <mauriziocingolani74@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version 1.0.1
+ * @version 1.1
  */
 class Calendar extends Widget {
 
     const MODE_MONTH = 'month';
     const MODE_WEEK = 'week';
-    const MODE_DAY = 'day'; # non implementato al momento
+    const MODE_DAY = 'day';
 
     /** Array di modalità consentite (default: month, week) */
     public $modes = [self::MODE_MONTH, self::MODE_WEEK];
@@ -28,6 +28,9 @@ class Calendar extends Widget {
 
     /** Nome del mese (tutto minuscolo) oppure numero della settimana */
     public $monthOrWeek;
+
+    /** Giorno */
+    public $day;
 
     /** Percorso base per gli url delle modalità e dei pulsanti. Se specificato deve avere slash alla fine ma non all'inizio (es. "site/calendario/"). */
     public $route;
@@ -62,12 +65,12 @@ class Calendar extends Widget {
      * @throws InvalidConfigException 
      */
     private function _checkConfig() {
-        if ($this->mode == self::MODE_DAY) :
-            throw new InvalidConfigException(self::class . ': "day" mode not supported yet.');
-        elseif (!in_array($this->mode, $this->modes)) :
+        if (!in_array($this->mode, $this->modes)) :
             throw new InvalidConfigException(self::class . ': you should add the $mode you selected (' . $this->mode . ') in the $modes attribute array.');
         elseif (in_array($this->mode, [self::MODE_MONTH, self::MODE_WEEK]) && !($this->year && $this->monthOrWeek)) :
             throw new InvalidConfigException(self::class . ': you must set the $year and $monthOrWeek attributes.');
+        elseif ($this->mode == self::MODE_DAY && !($this->year && $this->monthOrWeek && $this->day)) :
+            throw new InvalidConfigException(self::class . ': you must set the $year, $monthOrWeek and $day attributes.');
         endif;
     }
 
@@ -77,7 +80,9 @@ class Calendar extends Widget {
      */
     public function getMode(): string {
         if (!$this->_mode) :
-            if ((int) $this->monthOrWeek > 0) :
+            if ($this->day > 0) :
+                $this->_mode = self::MODE_DAY;
+            elseif ((int) $this->monthOrWeek > 0) :
                 $this->_mode = self::MODE_WEEK;
             else :
                 $this->_mode = self::MODE_MONTH;
@@ -96,6 +101,10 @@ class Calendar extends Widget {
             # mese della settimana attuale
             $firstDayTime = strtotime("$this->year-W$this->monthOrWeek-1");
             return '/' . $this->route . $this->year . '/' . DateTime::GetMonth((int) date("m", $firstDayTime));
+        elseif ($this->mode == self::MODE_DAY) :
+            # mese del giorno attuale
+            $dayTime = strtotime("$this->year-$this->monthOrWeek-$this->day");
+            return '/' . $this->route . $this->year . '/' . DateTime::GetMonth((int) date("m", $dayTime));
         endif;
     }
 
@@ -114,6 +123,26 @@ class Calendar extends Widget {
             endif;
         elseif ($this->mode == self::MODE_WEEK) :
             return '';
+        elseif ($this->mode == self::MODE_DAY) :
+            # settimana del giorno attuale
+            $dayTime = strtotime("$this->year-$this->monthOrWeek-$this->day");
+            return '/' . $this->route . $this->year . '/' . date('W', $dayTime);
+        endif;
+    }
+
+    /**
+     * @return string Url per il pulsante di modalità giorno.
+     */
+    public function getDayModeUrl() {
+        if ($this->mode == self::MODE_MONTH) :
+            # primo giorno del mese
+            return "/$this->route$this->year/" . sprintf('%02d', DateTime::GetMonthNumber($this->monthOrWeek)) . "/01";
+        elseif ($this->mode == self::MODE_WEEK) :
+            # primo giorno della settimana
+            $firstDayTime = strtotime("$this->year-W$this->monthOrWeek-1");
+            return "/$this->route" . date('Y/m/d', $firstDayTime);
+        elseif ($this->mode == self::MODE_DAY) :
+            return '';
         endif;
     }
 
@@ -128,7 +157,11 @@ class Calendar extends Widget {
         elseif ($this->mode == self::MODE_WEEK) :
             $prev = new \DateTime("$this->year-W$this->monthOrWeek-1");
             $prev->modify('-1 week');
-            return '/' . $this->route . $prev->format('Y') . '/' . $prev->format('W');
+            return '/' . $this->route . $prev->format('Y/W');
+        elseif ($this->mode == self::MODE_DAY) :
+            $prev = new \DateTime("$this->year-$this->monthOrWeek-$this->day");
+            $prev->modify('-1 day');
+            return '/' . $this->route . $prev->format('Y/m/d');
         endif;
     }
 
@@ -140,6 +173,8 @@ class Calendar extends Widget {
             return 'Vai al mese precedente';
         elseif ($this->mode == self::MODE_WEEK) :
             return 'Vai alla settimana precedente';
+        elseif ($this->mode == self::MODE_DAY) :
+            return 'Vai al giorno successivo';
         endif;
     }
 
@@ -152,6 +187,8 @@ class Calendar extends Widget {
         elseif ($this->mode == self::MODE_WEEK) :
             # Attenzione! Usare anno ISO 8601, altrimenti nell'ultima settimana dell'anno possono esserci problemi
             return '/' . $this->route . date('o/W');
+        elseif ($this->mode == self::MODE_DAY) :
+            return '/' . $this->route . date('Y/m/d');
         endif;
     }
 
@@ -166,7 +203,11 @@ class Calendar extends Widget {
         elseif ($this->mode == self::MODE_WEEK) :
             $next = new \DateTime("$this->year-W$this->monthOrWeek-1");
             $next->modify('+1 week');
-            return '/' . $this->route . $next->format('Y') . '/' . $next->format('W');
+            return '/' . $this->route . $next->format('Y/W');
+        elseif ($this->mode == self::MODE_DAY) :
+            $next = new \DateTime("$this->year-$this->monthOrWeek-$this->day");
+            $next->modify('+1 day');
+            return '/' . $this->route . $next->format('Y/m/d');
         endif;
     }
 
@@ -178,6 +219,8 @@ class Calendar extends Widget {
             return 'Vai al mese successivo';
         elseif ($this->mode == self::MODE_WEEK) :
             return 'Vai alla settimana successiva';
+        elseif ($this->mode == self::MODE_DAY) :
+            return 'Vai al giorno successivo';
         endif;
     }
 
@@ -213,6 +256,8 @@ class Calendar extends Widget {
                 $days[] = $d->modify("+$i day");
             endfor;
             return $days;
+        elseif ($this->mode == self::MODE_DAY) :
+            return [new \DateTime("$this->year/$this->monthOrWeek/$this->day")];
         endif;
     }
 

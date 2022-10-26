@@ -18,9 +18,16 @@ $calendar = $this->context;
         <div class="btn-group" role="group" aria-label="...">
             <?php if (array_search(Calendar::MODE_MONTH, $calendar->modes) !== false) : ?>
                 <a href="<?= $calendar->getMonthModeUrl(); ?>" class="btn btn-default btn-xs <?= $calendar->mode == Calendar::MODE_MONTH ? 'btn-primary disabled' : null; ?>">Mese</a>
-            <?php endif; ?>
-            <?php if (array_search(Calendar::MODE_WEEK, $calendar->modes) !== false) : ?>
+                <?php
+            endif;
+            if (array_search(Calendar::MODE_WEEK, $calendar->modes) !== false) :
+                ?>
                 <a href="<?= $calendar->getWeekModeUrl(); ?>" class="btn btn-default btn-xs <?= $calendar->mode == Calendar::MODE_WEEK ? 'btn-primary disabled' : null; ?>">Settimana</a>
+                <?php
+            endif;
+            if (array_search(Calendar::MODE_DAY, $calendar->modes) !== false) :
+                ?>
+                <a href="<?= $calendar->getDayModeUrl(); ?>" class="btn btn-default btn-xs <?= $calendar->mode == Calendar::MODE_DAY ? 'btn-primary disabled' : null; ?>">Giorno</a>
             <?php endif; ?>
         </div>
     </div>
@@ -32,6 +39,8 @@ $calendar = $this->context;
             echo Html::tag('h4', "$calendar->monthOrWeek $calendar->year");
         elseif ($calendar->mode == Calendar::MODE_WEEK) :
             echo Html::tag('h4', "settimana $calendar->monthOrWeek del $calendar->year");
+        elseif ($calendar->mode == Calendar::MODE_DAY) :
+            echo Html::tag('h4', "giorno $calendar->day/$calendar->monthOrWeek/$calendar->year");
         endif;
         ?>
     </div>
@@ -86,9 +95,9 @@ $calendar = $this->context;
                 </tr>
             <?php endforeach; ?>
 
-        <?php elseif ($calendar->mode == Calendar::MODE_WEEK) : ?>
+        <?php elseif (in_array($calendar->mode, [Calendar::MODE_WEEK, Calendar::MODE_DAY])) : ?>
 
-            <!-- WEEK TABLE -->
+            <!-- WEEK and DAY TABLE -->
             <tr>
                 <?php foreach ($days as $day) : ?>
                     <td class="day d-table-cell d-sm-none">
