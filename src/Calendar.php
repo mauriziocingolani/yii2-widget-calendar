@@ -2,6 +2,7 @@
 
 namespace mauriziocingolani\calendar;
 
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap4\Widget;
 use mauriziocingolani\yii2fmwkphp\DateTime;
@@ -267,4 +268,5 @@ class Calendar extends Widget {
         endif;
         return $url;
     }
+
 }
