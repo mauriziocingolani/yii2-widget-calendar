@@ -12,7 +12,7 @@ use mauriziocingolani\yii2fmwkphp\DateTime;
  * 
  * @author Maurizio Cingolani <mauriziocingolani74@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version 1.1
+ * @version 1.1.1
  */
 class Calendar extends Widget {
 
@@ -100,11 +100,11 @@ class Calendar extends Widget {
         elseif ($this->mode == self::MODE_WEEK) :
             # mese della settimana attuale
             $firstDayTime = strtotime("$this->year-W$this->monthOrWeek-1");
-            return '/' . $this->route . $this->year . '/' . DateTime::GetMonth((int) date("m", $firstDayTime));
+            return $this->_getUrlWithParams('/' . $this->route . $this->year . '/' . DateTime::GetMonth((int) date("m", $firstDayTime)));
         elseif ($this->mode == self::MODE_DAY) :
             # mese del giorno attuale
             $dayTime = strtotime("$this->year-$this->monthOrWeek-$this->day");
-            return '/' . $this->route . $this->year . '/' . DateTime::GetMonth((int) date("m", $dayTime));
+            return $this->_getUrlWithParams('/' . $this->route . $this->year . '/' . DateTime::GetMonth((int) date("m", $dayTime)));
         endif;
     }
 
@@ -116,17 +116,17 @@ class Calendar extends Widget {
             $today = new \DateTime;
             $month = DateTime::GetMonthNumber($this->monthOrWeek);
             if ($today->format('Y') == (int) $this->year && $today->format('m') == $month) : # oggi è nel mese
-                return '/' . $this->route . $today->format('Y/W');
+                return $this->_getUrlWithParams('/' . $this->route . $today->format('Y/W'));
             else : # oggi non è nel mese
                 $firstDayTime = strtotime("$this->year-$month-1");
-                return '/' . $this->route . date('Y/W', $firstDayTime);
+                return $this->_getUrlWithParams('/' . $this->route . date('Y/W', $firstDayTime));
             endif;
         elseif ($this->mode == self::MODE_WEEK) :
             return '';
         elseif ($this->mode == self::MODE_DAY) :
             # settimana del giorno attuale
             $dayTime = strtotime("$this->year-$this->monthOrWeek-$this->day");
-            return '/' . $this->route . $this->year . '/' . date('W', $dayTime);
+            return $this->_getUrlWithParams('/' . $this->route . $this->year . '/' . date('W', $dayTime));
         endif;
     }
 
@@ -136,11 +136,11 @@ class Calendar extends Widget {
     public function getDayModeUrl() {
         if ($this->mode == self::MODE_MONTH) :
             # primo giorno del mese
-            return "/$this->route$this->year/" . sprintf('%02d', DateTime::GetMonthNumber($this->monthOrWeek)) . "/01";
+            return $this->_getUrlWithParams("/$this->route$this->year/" . sprintf('%02d', DateTime::GetMonthNumber($this->monthOrWeek)) . "/01");
         elseif ($this->mode == self::MODE_WEEK) :
             # primo giorno della settimana
             $firstDayTime = strtotime("$this->year-W$this->monthOrWeek-1");
-            return "/$this->route" . date('Y/m/d', $firstDayTime);
+            return $this->_getUrlWithParams("/$this->route" . date('Y/m/d', $firstDayTime));
         elseif ($this->mode == self::MODE_DAY) :
             return '';
         endif;
@@ -153,15 +153,15 @@ class Calendar extends Widget {
         if ($this->mode == self::MODE_MONTH) :
             $prev = new \DateTime($this->year . '-' . DateTime::GetMonthNumber($this->monthOrWeek) . '-1');
             $prev->modify('-1 month');
-            return '/' . $this->route . $prev->format('Y') . '/' . DateTime::GetMonth((int) $prev->format('m'));
+            return $this->_getUrlWithParams('/' . $this->route . $prev->format('Y') . '/' . DateTime::GetMonth((int) $prev->format('m')));
         elseif ($this->mode == self::MODE_WEEK) :
             $prev = new \DateTime("$this->year-W$this->monthOrWeek-1");
             $prev->modify('-1 week');
-            return '/' . $this->route . $prev->format('Y/W');
+            return $this->_getUrlWithParams('/' . $this->route . $prev->format('Y/W'));
         elseif ($this->mode == self::MODE_DAY) :
             $prev = new \DateTime("$this->year-$this->monthOrWeek-$this->day");
             $prev->modify('-1 day');
-            return '/' . $this->route . $prev->format('Y/m/d');
+            return $this->_getUrlWithParams('/' . $this->route . $prev->format('Y/m/d'));
         endif;
     }
 
@@ -183,12 +183,12 @@ class Calendar extends Widget {
      */
     public function getTodayButtonUrl(): string {
         if ($this->mode == self::MODE_MONTH) :
-            return '/' . $this->route . date('Y') . '/' . DateTime::GetMonth((int) date('m'));
+            return $this->_getUrlWithParams('/' . $this->route . date('Y') . '/' . DateTime::GetMonth((int) date('m')));
         elseif ($this->mode == self::MODE_WEEK) :
             # Attenzione! Usare anno ISO 8601, altrimenti nell'ultima settimana dell'anno possono esserci problemi
-            return '/' . $this->route . date('o/W');
+            return $this->_getUrlWithParams('/' . $this->route . date('o/W'));
         elseif ($this->mode == self::MODE_DAY) :
-            return '/' . $this->route . date('Y/m/d');
+            return $this->_getUrlWithParams('/' . $this->route . date('Y/m/d'));
         endif;
     }
 
@@ -199,15 +199,15 @@ class Calendar extends Widget {
         if ($this->mode == self::MODE_MONTH) :
             $next = new \DateTime($this->year . '-' . DateTime::GetMonthNumber($this->monthOrWeek) . '-1');
             $next->modify('+1 month');
-            return '/' . $this->route . $next->format('Y') . '/' . DateTime::GetMonth((int) $next->format('m'));
+            return $this->_getUrlWithParams('/' . $this->route . $next->format('Y') . '/' . DateTime::GetMonth((int) $next->format('m')));
         elseif ($this->mode == self::MODE_WEEK) :
             $next = new \DateTime("$this->year-W$this->monthOrWeek-1");
             $next->modify('+1 week');
-            return '/' . $this->route . $next->format('Y/W');
+            return $this->_getUrlWithParams('/' . $this->route . $next->format('Y/W'));
         elseif ($this->mode == self::MODE_DAY) :
             $next = new \DateTime("$this->year-$this->monthOrWeek-$this->day");
             $next->modify('+1 day');
-            return '/' . $this->route . $next->format('Y/m/d');
+            return $this->_getUrlWithParams('/' . $this->route . $next->format('Y/m/d'));
         endif;
     }
 
@@ -261,4 +261,10 @@ class Calendar extends Widget {
         endif;
     }
 
+    private function _getUrlWithParams($url) {
+        if (Yii::$app->request->isGet && count($_REQUEST) > 0) :
+            return $url . '?' . http_build_query($_REQUEST);
+        endif;
+        return $url;
+    }
 }
