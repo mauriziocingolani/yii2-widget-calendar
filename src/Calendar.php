@@ -250,7 +250,7 @@ class Calendar extends Widget {
         if ($mode == self::MODE_MONTH) :
             $days = [];
             $m = DateTime::GetMonthNumber($monthOrWeek);
-            $firstday = new \DateTime("year-$m-1"); # primo giorno del mese
+            $firstday = new \DateTime("$year-$m-1"); # primo giorno del mese
             $dayInWeek = (int) $firstday->format('N'); # posizione del primo giorno del mese (1 per lunedì)
             if ($dayInWeek > 1) # se la settimana non inizia di lunedì sottraggo i giorni per arrivare al vero giorno
                 $firstday->sub(new \DateInterval("P" . ($dayInWeek - 1) . "D"));
