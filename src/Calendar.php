@@ -13,7 +13,7 @@ use mauriziocingolani\yii2fmwkphp\DateTime;
  * 
  * @author Maurizio Cingolani <mauriziocingolani74@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version 1.1.1
+ * @version 1.1.2
  */
 class Calendar extends Widget {
 
@@ -229,10 +229,28 @@ class Calendar extends Widget {
      * @return array Oggetti \DateTime che rappresentano i giorni da mostrare sul calendario.
      */
     public function getDays(): array {
-        if ($this->mode == self::MODE_MONTH) :
+        return self::_getDays($this->mode, $this->year, $this->monthOrWeek, $this->day);
+    }
+
+    private function _getUrlWithParams($url) {
+        if (Yii::$app->request->isGet && count($_REQUEST) > 0) :
+            return $url . '?' . http_build_query($_REQUEST);
+        endif;
+        return $url;
+    }
+
+    /**
+     * @return array Oggetti \DateTime che rappresentano i giorni da mostrare sul calendario.
+     */
+    public static function GetCalendarDays($mode, $year, $monthOrWeek, $day) {
+        return self::_getDays($mode, $year, $monthOrWeek, $day);
+    }
+
+    public static function _getDays($mode, $year, $monthOrWeek, $day) {
+        if ($mode == self::MODE_MONTH) :
             $days = [];
-            $m = DateTime::GetMonthNumber($this->monthOrWeek);
-            $firstday = new \DateTime("$this->year-$m-1"); # primo giorno del mese
+            $m = DateTime::GetMonthNumber($monthOrWeek);
+            $firstday = new \DateTime("year-$m-1"); # primo giorno del mese
             $dayInWeek = (int) $firstday->format('N'); # posizione del primo giorno del mese (1 per lunedì)
             if ($dayInWeek > 1) # se la settimana non inizia di lunedì sottraggo i giorni per arrivare al vero giorno
                 $firstday->sub(new \DateInterval("P" . ($dayInWeek - 1) . "D"));
@@ -249,24 +267,17 @@ class Calendar extends Widget {
                 $weekIteration++;
             } while ($firstday->format('m') == $m);
             return $days;
-        elseif ($this->mode == self::MODE_WEEK) :
-            $first = new \DateTime("$this->year-W$this->monthOrWeek-1");
+        elseif ($mode == self::MODE_WEEK) :
+            $first = new \DateTime("$year-W$monthOrWeek-1");
             $days = [$first];
             for ($i = 1; $i <= 6; $i++) :
                 $d = clone $first;
                 $days[] = $d->modify("+$i day");
             endfor;
             return $days;
-        elseif ($this->mode == self::MODE_DAY) :
-            return [new \DateTime("$this->year/$this->monthOrWeek/$this->day")];
+        elseif ($mode == self::MODE_DAY) :
+            return [new \DateTime("$year/$monthOrWeek/$day")];
         endif;
-    }
-
-    private function _getUrlWithParams($url) {
-        if (Yii::$app->request->isGet && count($_REQUEST) > 0) :
-            return $url . '?' . http_build_query($_REQUEST);
-        endif;
-        return $url;
     }
 
 }
