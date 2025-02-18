@@ -13,7 +13,7 @@ use mauriziocingolani\yii2fmwkphp\DateTime;
  * 
  * @author Maurizio Cingolani <mauriziocingolani74@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version 1.1.2
+ * @version 1.1.3
  */
 class Calendar extends Widget {
 
@@ -38,6 +38,11 @@ class Calendar extends Widget {
 
     /** Array dei dati. Le chiavi devono essere i giorni (formato 'Y-m-d') e i valori il contenuto html delle celle. */
     public $data;
+
+    /** Se impostata viene appesa agli url per permettere lo scorrimento della pagina. */
+    public $section;
+
+    /** */
     private $_mode;
 
     /**
@@ -233,9 +238,10 @@ class Calendar extends Widget {
     }
 
     private function _getUrlWithParams($url) {
-        if (Yii::$app->request->isGet && count($_REQUEST) > 0) :
-            return $url . '?' . http_build_query($_REQUEST);
-        endif;
+        if (Yii::$app->request->isGet && count($_REQUEST) > 0)
+            $url .= '?' . http_build_query($_REQUEST);
+        if ($this->section)
+            $url .= '#' . $this->section;
         return $url;
     }
 
@@ -279,5 +285,4 @@ class Calendar extends Widget {
             return [new \DateTime("$year/$monthOrWeek/$day")];
         endif;
     }
-
 }
