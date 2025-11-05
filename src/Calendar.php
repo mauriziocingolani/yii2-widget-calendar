@@ -13,7 +13,7 @@ use mauriziocingolani\yii2fmwkphp\DateTime;
  * 
  * @author Maurizio Cingolani <mauriziocingolani74@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version 1.1.4
+ * @version 1.1.5
  */
 class Calendar extends Widget {
 
