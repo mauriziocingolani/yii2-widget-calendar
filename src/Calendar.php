@@ -13,7 +13,7 @@ use mauriziocingolani\yii2fmwkphp\DateTime;
  * 
  * @author Maurizio Cingolani <mauriziocingolani74@gmail.com>
  * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version 1.1.3
+ * @version 1.1.4
  */
 class Calendar extends Widget {
 
@@ -163,7 +163,7 @@ class Calendar extends Widget {
         elseif ($this->mode == self::MODE_WEEK) :
             $prev = new \DateTime("$this->year-W$this->monthOrWeek-1");
             $prev->modify('-1 week');
-            return $this->_getUrlWithParams('/' . $this->route . $prev->format('Y/W'));
+            return $this->_getUrlWithParams('/' . $this->route . $prev->format('o/W'));
         elseif ($this->mode == self::MODE_DAY) :
             $prev = new \DateTime("$this->year-$this->monthOrWeek-$this->day");
             $prev->modify('-1 day');
@@ -209,7 +209,7 @@ class Calendar extends Widget {
         elseif ($this->mode == self::MODE_WEEK) :
             $next = new \DateTime("$this->year-W$this->monthOrWeek-1");
             $next->modify('+1 week');
-            return $this->_getUrlWithParams('/' . $this->route . $next->format('Y/W'));
+            return $this->_getUrlWithParams('/' . $this->route . $next->format('o/W'));
         elseif ($this->mode == self::MODE_DAY) :
             $next = new \DateTime("$this->year-$this->monthOrWeek-$this->day");
             $next->modify('+1 day');
